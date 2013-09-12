@@ -32,7 +32,8 @@ module Paranoia
 
   def delete
     return if new_record? or destroyed?
-    update_attribute_or_column :deleted_at, Time.now
+    query = "update #{self.table_name} set deleted_at=now() where id=#{self.id}"
+    ActiveRecord::Base.connection.execute(query);
   end
 
   def restore!
